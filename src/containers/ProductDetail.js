@@ -1,10 +1,9 @@
 import React, { useEffect } from "react";
-import axios from "axios";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import {
-  selectedProduct,
   removeSelectedProduct,
+  fetchProduct,
 } from "../redux/actions/productActions";
 import { useSelector } from "react-redux";
 
@@ -19,19 +18,9 @@ const ProductDetail = () => {
 
   const dispatch = useDispatch();
 
-  const fetchUserDetails = async () => {
-    const res = await axios
-      .get(`https://jsonplaceholder.typicode.com/users/${productId}`)
-      .catch((err) => {
-        console.log("Error:", err);
-      });
-
-    dispatch(selectedProduct(res.data));
-  };
-
   useEffect(() => {
     if (productId && productId !== "") {
-      fetchUserDetails();
+      dispatch(fetchProduct(productId));
     }
     return () => {
       dispatch(removeSelectedProduct());
